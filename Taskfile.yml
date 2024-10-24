@@ -1,0 +1,43 @@
+version: '3'
+
+tasks:
+  build:
+    desc: "build the compiled binary"
+    cmds:
+      - go build -o app main.go
+
+  test:
+    desc: "run all unit tests"
+    cmds:
+      - go test -v ./...
+
+  lint:
+    desc: "lint the code"
+    cmds:
+      - golangci-lint run
+
+  run:
+    desc: "runs our app and any dependencies defined within the docker-compose.yml"
+    cmds:
+      - task build
+      - ./app
+
+  # integration-test:
+  #   desc: "starts our app and then attempts to run our integration tests"
+  #   cmds:
+  #     - docker-compose up -d db
+  #     - go test -tags=integration -v ./...
+  #   env:
+  #     DB_USERNAME: postgres
+  #     DB_PASSWORD: postgres
+  #     DB_TABLE: postgres
+  #     DB_HOST: localhost
+  #     DB_PORT: 5432
+  #     DB_DB: postgres
+  #     SSL_MODE: disable
+
+  # acceptance-tests:
+  #   desc: "starts our app and then attempts to run our e2e tests"
+  #   cmds:
+  #     - docker-compose up -d --build
+  #     - go test -tags=e2e -v ./...
